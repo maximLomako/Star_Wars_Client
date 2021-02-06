@@ -47,5 +47,13 @@ export const dataAPI = {
         res.data.results
       )
       .catch(() => console.error(`Could not fetch url ${URL}`))
-  }
+  },
+  getSelectedItem: (group: string, name: string) => {
+    return instance.get(`/${group}/?search=${name}`)
+      .then(res =>
+       res.data.results
+      )
+      .catch(() => console.error(`Could not fetch url ${URL}`))
+  },
+
 }

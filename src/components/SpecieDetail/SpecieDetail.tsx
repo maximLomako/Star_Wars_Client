@@ -8,9 +8,6 @@ interface StarshipDetailType {
   designation: string
   averageHeight: string
 }
-
-
-
 export const SpecieDetail: React.FC<StarshipDetailType> = (props) => {
   const {
     name,

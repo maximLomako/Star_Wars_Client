@@ -41,7 +41,7 @@ export const ItemsList: React.FC<ItemsListType> = (props) => {
           }}
         >
           <ListItemText primary={getHighlightedText(el.name, inputValue)}/>
-          <ListItemText primary={el.group}/>
+          <ListItemText  primary={el.group}/>
         </ListItem>)}
     </div>
   )

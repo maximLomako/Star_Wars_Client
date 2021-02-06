@@ -125,7 +125,7 @@ const App = () => {
   }
   const getHighlightedText = (text: string, highlight: string) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-    return parts.map(part => part.toLowerCase() === highlight.toLowerCase() ? <b>{part}</b> : part);
+    return parts.map((part, i) => part.toLowerCase() === highlight.toLowerCase() ? <b key={i}>{part}</b> : part);
   }
 
   return (

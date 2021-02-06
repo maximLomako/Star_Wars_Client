@@ -17,40 +17,44 @@ export interface listItemsValueType {
 
 const App = () => {
 
-  const [state, setState] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
   const [listItemsValue, setListItemsValue] = useState<Array<listItemsValueType>>([]);
-  const [selectedItem, setSelectedItem] = useState<any>(null)
+  const [selectedItem, setSelectedItem] = useState<any>(null);
   let view;
 
   const changeInputValue = (newValue: string) => {
-    setState(newValue);
+    setInputValue(newValue);
   }
   const selectItem = (group: string, name: string) => {
     dataAPI.getSelectedItem(group, name)
       .then((data) => data.map((el: any) => ({...el, group})))
       .then((res) => setSelectedItem(res));
   }
-
+  const hideItemList = () => {
+    setListItemsValue([]);
+  }
+  const hideSelectedItem = () => {
+    setSelectedItem(null);
+  }
   useEffect(() => {
-    if (state.length >= 3) {
-      const p1 = dataAPI.getAllFilms(state)
+    if (inputValue.length >= 3) {
+      const p1 = dataAPI.getAllFilms(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'films'})));
-      const p2 = dataAPI.getAllPeople(state)
+      const p2 = dataAPI.getAllPeople(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'people'})));
-      const p3 = dataAPI.getAllPlanets(state)
+      const p3 = dataAPI.getAllPlanets(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'planets'})));
-      const p4 = dataAPI.getAllSpecies(state)
+      const p4 = dataAPI.getAllSpecies(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'species'})));
-      const p5 = dataAPI.getAllStarships(state)
+      const p5 = dataAPI.getAllStarships(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'starships'})));
-      const p6 = dataAPI.getAllVehicles(state)
+      const p6 = dataAPI.getAllVehicles(inputValue)
         .then((data) => data.map((el: any) => ({...el, group: 'vehicles'})));
       Promise.all([p1, p2, p3, p4, p5, p6]).then(values => {
         setListItemsValue(values.flat().map((el: any) => ({name: el.name || el.title, group: el.group})));
       })
     }
-  }, [state])
-
+  }, [inputValue])
   if (selectedItem) {
     const {group, name} = selectedItem[0];
     switch (group) {
@@ -119,18 +123,29 @@ const App = () => {
         break;
     }
   }
+  const getHighlightedText = (text: string, highlight: string) => {
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return parts.map(part => part.toLowerCase() === highlight.toLowerCase() ? <b>{part}</b> : part);
+  }
 
   return (
     <div className="App">
       <div className="AppWrapper">
         <TextAreaField
-          value={state}
+          value={inputValue}
           changeInputValue={changeInputValue}
+          hideSelectedItem={hideSelectedItem}
         />
-        <ItemsList
-          listItemsValue={listItemsValue}
-          selectItem={selectItem}
-        />
+        <div className="AppList">
+          <ItemsList
+            inputValue={inputValue}
+            listItemsValue={listItemsValue}
+            selectItem={selectItem}
+            hideItemList={hideItemList}
+            changeInputValue={changeInputValue}
+            getHighlightedText={getHighlightedText}
+          />
+        </div>
         {view}
       </div>
     </div>

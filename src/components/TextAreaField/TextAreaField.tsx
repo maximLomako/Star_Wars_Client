@@ -4,6 +4,7 @@ import {createStyles, makeStyles, TextField, Theme} from "@material-ui/core";
 interface TextAreaFieldType {
   value: string
   changeInputValue: (newValue: string) => void
+  hideSelectedItem: () => void
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -20,9 +21,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const TextAreaField: React.FC<TextAreaFieldType> = (props) => {
   const classes = useStyles();
-  const {value, changeInputValue} = props;
+  const {value, changeInputValue, hideSelectedItem} = props;
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     changeInputValue(e.currentTarget.value)
+    hideSelectedItem();
   }
 
   return (

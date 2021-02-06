@@ -4,56 +4,15 @@ const instance = axios.create({
   baseURL: 'https://swapi.dev/api',
 });
 
+const getRecourse = (url: string) => instance.get(url).then(res =>
+  res.data.results)
+  .catch(() => console.error(`Could not fetch url ${URL}`))
+
 export const dataAPI = {
-  getAllFilms: (inputValue: string) => {
-    return instance.get(`/films/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-  getAllPeople: (inputValue: string) => {
-    return instance.get(`/people/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-  getAllPlanets: (inputValue: string) => {
-    return instance.get(`/planets/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-
-  getAllSpecies: (inputValue: string) => {
-    return instance.get(`/species/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-  getAllStarships: (inputValue: string) => {
-    return instance.get(`/starships/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-  getAllVehicles: (inputValue: string) => {
-    return instance.get(`/vehicles/?search=${inputValue}`)
-      .then(res =>
-        res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-  getSelectedItem: (group: string, name: string) => {
-    return instance.get(`/${group}/?search=${name}`)
-      .then(res =>
-       res.data.results
-      )
-      .catch(() => console.error(`Could not fetch url ${URL}`))
-  },
-
+  getAllFilms: (inputValue: string) => getRecourse(`/films/?search=${inputValue}`),
+  getAllPeople: (inputValue: string) => getRecourse(`/people/?search=${inputValue}`),
+  getAllPlanets: (inputValue: string) => getRecourse(`/planets/?search=${inputValue}`),
+  getAllSpecies: (inputValue: string) => getRecourse(`/species/?search=${inputValue}`),
+  getAllStarships: (inputValue: string) => getRecourse(`/starships/?search=${inputValue}`),
+  getAllVehicles: (inputValue: string) => getRecourse(`/vehicles/?search=${inputValue}`)
 }

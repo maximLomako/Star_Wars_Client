@@ -10,7 +10,7 @@ import './App.css';
 
 const App = () => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [listItemsValue, setListItemsValue] = useState<Array<ListItemsValueType>>([]);
+  const [listItemsValue, setListItemsValue] = useState<Array<ListItemsValueType> | null>(null);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [error, setError] = useState<boolean>(false)
   const changeInputValue = (newValue: string) => {
@@ -20,7 +20,7 @@ const App = () => {
     setSelectedItem(element);
   }
   const hideItemList = () => {
-    setListItemsValue([]);
+    setListItemsValue(null);
   }
   const hideSelectedItem = () => {
     setSelectedItem(null);
@@ -74,14 +74,14 @@ const App = () => {
               hideSelectedItem={hideSelectedItem}
             />
             <div className="AppList">
-              <ItemsList
+              {listItemsValue && <ItemsList
                 inputValue={inputValue}
                 listItemsValue={listItemsValue}
                 selectItem={selectItem}
                 hideItemList={hideItemList}
                 changeInputValue={changeInputValue}
                 getHighlightedText={getHighlightedText}
-              />
+              />}
             </div>
           <div className="AppItem">
             {selectedItem && renderDetailedView(selectedItem)}

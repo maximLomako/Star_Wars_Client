@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 import {createStyles, ListItem, ListItemText, makeStyles, Theme} from "@material-ui/core";
-import {ListItemsValueType} from "../../App";
+import {ListItemsValueType} from "../../types/ListItemsValueType";
 import s from './ItemsList.module.css'
 
 interface ItemsListType {

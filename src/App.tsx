@@ -83,7 +83,9 @@ const App = () => {
                 getHighlightedText={getHighlightedText}
               />
             </div>
-          {selectedItem && renderDetailedView(selectedItem)}
+          <div className="AppItem">
+            {selectedItem && renderDetailedView(selectedItem)}
+          </div>
         </div>
       }
     </div>

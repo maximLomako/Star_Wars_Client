@@ -9,8 +9,11 @@
 .AppWrapper {
   position: relative;
   width: 300px;
-  height: 300px;
 }
 .AppList {
+  position: absolute;
+}
+.AppItem {
+  width: 300px;
   position: absolute;
 }

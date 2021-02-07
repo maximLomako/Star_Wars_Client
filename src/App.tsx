@@ -7,6 +7,7 @@ import {CardInfo} from "./components/CardInfo/CardInfo";
 import {getDateForRenderDetailView, getHighlightedText} from "./utils/utils";
 import {ListItemsValueType} from "./types/ListItemsValueType";
 import './App.css';
+import {debounce} from "@material-ui/core";
 
 const App = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -30,26 +31,27 @@ const App = () => {
   }
   useEffect(() => {
     if (inputValue.length >= 3) {
-      const p1 = dataAPI.getAllFilms(inputValue)
-        .then((data) => addGroupProperty('films', data));
-      const p2 = dataAPI.getAllPeople(inputValue)
-        .then((data) => addGroupProperty('people', data));
-      const p3 = dataAPI.getAllPlanets(inputValue)
-        .then((data) => addGroupProperty('planets', data));
-      const p4 = dataAPI.getAllSpecies(inputValue)
-        .then((data) => addGroupProperty('species', data));
-      const p5 = dataAPI.getAllStarships(inputValue)
-        .then((data) => addGroupProperty('starships', data));
-      const p6 = dataAPI.getAllVehicles(inputValue)
-        .then((data) => addGroupProperty('vehicles', data));
-
-      Promise.all([p1, p2, p3, p4, p5, p6])
-        .then(values => {
-          setListItemsValue(values.flat());
-        })
-        .catch(() => {
-          setError(true)
-        })
+      debounce(() => {
+        const p1 = dataAPI.getAllFilms(inputValue)
+          .then((data) => addGroupProperty('films', data));
+        const p2 = dataAPI.getAllPeople(inputValue)
+          .then((data) => addGroupProperty('people', data));
+        const p3 = dataAPI.getAllPlanets(inputValue)
+          .then((data) => addGroupProperty('planets', data));
+        const p4 = dataAPI.getAllSpecies(inputValue)
+          .then((data) => addGroupProperty('species', data));
+        const p5 = dataAPI.getAllStarships(inputValue)
+          .then((data) => addGroupProperty('starships', data));
+        const p6 = dataAPI.getAllVehicles(inputValue)
+          .then((data) => addGroupProperty('vehicles', data));
+          Promise.all([p1, p2, p3, p4, p5, p6])
+          .then(values => {
+            setListItemsValue(values.flat());
+          })
+          .catch(() => {
+            setError(true)
+          })
+      }, 500)()
     }
   }, [inputValue])
   const renderDetailedView = useMemo(() => (selectedItem: any) => {
@@ -68,21 +70,21 @@ const App = () => {
           We have a problem, reload the page please!
         </Alert>
         : <div className="AppWrapper">
-            <TextAreaField
-              value={inputValue}
+          <TextAreaField
+            value={inputValue}
+            changeInputValue={changeInputValue}
+            hideSelectedItem={hideSelectedItem}
+          />
+          <div className="AppList">
+            {listItemsValue && <ItemsList
+              inputValue={inputValue}
+              listItemsValue={listItemsValue}
+              selectItem={selectItem}
+              hideItemList={hideItemList}
               changeInputValue={changeInputValue}
-              hideSelectedItem={hideSelectedItem}
-            />
-            <div className="AppList">
-              {listItemsValue && <ItemsList
-                inputValue={inputValue}
-                listItemsValue={listItemsValue}
-                selectItem={selectItem}
-                hideItemList={hideItemList}
-                changeInputValue={changeInputValue}
-                getHighlightedText={getHighlightedText}
-              />}
-            </div>
+              getHighlightedText={getHighlightedText}
+            />}
+          </div>
           <div className="AppItem">
             {selectedItem && renderDetailedView(selectedItem)}
           </div>
